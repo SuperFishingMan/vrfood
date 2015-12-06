@@ -89,8 +89,10 @@ public class CardboardHead : MonoBehaviour {
     UpdateHead();
   }
 
-  // Compute new head pose.
-  private void UpdateHead() {
+    public float limit = 0.5f;
+    // Compute new head pose.
+    private void UpdateHead() {
+
     if (updated) {  // Only one update per frame, please.
       return;
     }
@@ -100,8 +102,8 @@ public class CardboardHead : MonoBehaviour {
     if (trackRotation) {
       var rot = Cardboard.SDK.HeadPose.Orientation;
       if (target == null) {
-        transform.localRotation = rot;
-      } else {
+         transform.localRotation = Quaternion.Slerp(rot, Quaternion.Euler(Vector3.forward), limit);
+            } else {
         transform.rotation = target.rotation * rot;
       }
     }
